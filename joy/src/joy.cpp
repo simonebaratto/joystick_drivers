@@ -96,7 +96,9 @@ Joy::Joy(const rclcpp::NodeOptions & options)
   // to use it; this ensures that we are always using the correct time source.
   publish_soon_time_ = this->now();
 
-  pub_ = create_publisher<sensor_msgs::msg::Joy>("joy", 10);
+  car_index_ = this->declare_parameter("car_index", 0);
+
+  pub_ = create_publisher<sensor_msgs::msg::Joy>("car"+std::to_string(car_index_)+"_joy", 10);
 
   feedback_sub_ = this->create_subscription<sensor_msgs::msg::JoyFeedback>(
     "joy/set_feedback", rclcpp::QoS(10), std::bind(
